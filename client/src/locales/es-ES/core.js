@@ -361,6 +361,8 @@ export default {
       userAddedYouToCard: '<0>{{user}}</0> te añadió a <2>{{card}}</2>',
       userCompletedTaskOnCard: '<0>{{user}}</0> completó {{task}} en <4>{{card}}</4>',
       userCompletedTaskOnThisCard: '<0>{{user}}</0> completó {{task}} en esta tarjeta',
+      userIsAssignedToCardsInList:
+        '<0>{{user}}</0> está asignado a {{count}} tarjetas en {{list}} (<2>{{card}}</2>)',
       userJoinedCard: '<0>{{user}}</0> se unió a <2>{{card}}</2>',
       userJoinedThisCard: '<0>{{user}}</0> se unió a esta tarjeta',
       userLeftCard: '<0>{{user}}</0> abandonó <2>{{card}}</2>',

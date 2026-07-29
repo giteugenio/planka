@@ -106,7 +106,10 @@ export const NotificationTypes = {
   COMMENT_CARD: 'commentCard',
   ADD_MEMBER_TO_CARD: 'addMemberToCard',
   MENTION_IN_COMMENT: 'mentionInComment',
+  EXCEED_CARD_LIMIT_IN_LIST: 'exceedCardLimitInList',
 };
+// para la condición de EXCEED_CARD_LIMIT_IN_LIST
+export const WIP = 3;
 
 export const NotificationServiceFormats = {
   TEXT: 'text',
@@ -114,6 +117,10 @@ export const NotificationServiceFormats = {
   HTML: 'html',
 };
 
-export const SpecialListNames = {
+export const DoneListNames = {
   DONE: ['done', 'hecho', 'finalizado', 'terminado', 'completado'],
+};
+
+export const DoingListNames = {
+  DOING: ['doing', 'haciendo', 'en progreso', 'in progress', 'en curso', 'desarrollo', 'proceso', 'wip'],
 };

@@ -194,9 +194,68 @@ module.exports = {
           webhooks: inputs.webhooks,
         });
       }
-    }
 
-    if (Action.EXTERNAL_NOTIFIABLE_TYPES.includes(action.type)) {
+      if (
+        [Action.Types.MOVE_CARD, Action.Types.ADD_MEMBER_TO_CARD].includes(action.type) &&
+        values.card &&
+        inputs.list
+      ) {
+        const listName = inputs.list.name ? inputs.list.name.trim().toLowerCase() : '';
+        const isDoingList = Notification.DoingListNames.DOING.some(
+          (doingName) => doingName.toLowerCase() === listName,
+        );
+
+        if (isDoingList) {
+          const cardMemberships = await CardMembership.qm.getByCardId(values.card.id);
+        const cardUserIds = sails.helpers.utils.mapRecords(cardMemberships, 'userId');
+
+        if (cardUserIds.length > 0) {
+          const destinationCards = await Card.qm.getByListId(inputs.list.id);
+          const destinationCardIds = sails.helpers.utils.mapRecords(destinationCards);
+          const destinationMemberships = await CardMembership.qm.getByCardIds(
+            destinationCardIds,
+          );
+
+          const adminUserIds = await sails.helpers.users.getAllActiveIds(User.Roles.ADMIN);
+
+          for (const cardUserId of cardUserIds) {
+            const userCardsCountInList = destinationMemberships.filter(
+              (cm) => cm.userId === cardUserId,
+            ).length;
+
+            if (userCardsCountInList > Notification.WIP) {
+              const assignedUser = await User.qm.getOneById(cardUserId);
+              const recipientUserIds = _.uniq([...adminUserIds, cardUserId]);
+
+              if (recipientUserIds.length > 0) {
+                await sails.helpers.notifications.createMany.with({
+                  arrayOfValues: recipientUserIds.map((userId) => ({
+                    userId,
+                    action,
+                    type: Notification.Types.EXCEED_CARD_LIMIT_IN_LIST,
+                    data: {
+                      card: _.pick(values.card, ['name']),
+                      list: _.pick(inputs.list, ['id', 'type', 'name']),
+                      user: _.pick(assignedUser, ['id', 'name']),
+                      count: userCardsCountInList,
+                    },
+                    creatorUser: values.user,
+                    card: values.card,
+                  })),
+                  project: inputs.project,
+                  board: inputs.board,
+                  list: inputs.list,
+                  webhooks: inputs.webhooks,
+                });
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  if (Action.EXTERNAL_NOTIFIABLE_TYPES.includes(action.type)) {
       const notificationServices = await NotificationService.qm.getByBoardId(inputs.board.id);
 
       if (notificationServices.length > 0) {

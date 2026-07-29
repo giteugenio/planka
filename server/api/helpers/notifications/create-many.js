@@ -18,6 +18,8 @@ const buildTitle = (notification, t) => {
       return t('You Were Added to Card');
     case Notification.Types.MENTION_IN_COMMENT:
       return t('You Were Mentioned in Comment');
+    case Notification.Types.EXCEED_CARD_LIMIT_IN_LIST:
+      return t('Card Limit Exceeded in List');
     default:
       return null;
   }
@@ -123,6 +125,35 @@ const buildBodyByFormat = (board, card, notification, actorUser, t) => {
         )}:\n\n<i>${escapeHtml(commentText)}</i>`,
       };
     }
+    case Notification.Types.EXCEED_CARD_LIMIT_IN_LIST: {
+      const listName = sails.helpers.lists.resolveName(notification.data.list, t);
+      const targetUserName = notification.data.user ? notification.data.user.name : actorUser.name;
+      const count = notification.data.count || Notification.WIP + 1;
+
+      return {
+        text: t(
+          '%s is assigned to %s cards in %s on %s',
+          targetUserName,
+          count,
+          listName,
+          board.name,
+        ),
+        markdown: t(
+          '%s is assigned to %s cards in %s on %s',
+          escapeMarkdown(targetUserName),
+          count,
+          `**${escapeMarkdown(listName)}**`,
+          escapeMarkdown(board.name),
+        ),
+        html: t(
+          '%s is assigned to %s cards in %s on %s',
+          escapeHtml(targetUserName),
+          count,
+          `<b>${escapeHtml(listName)}</b>`,
+          escapeHtml(board.name),
+        ),
+      };
+    }
     default:
       return null;
   }
@@ -185,6 +216,21 @@ const buildEmail = (board, card, notification, actorUser, notifiableUser, t) => 
       )}</p><p>${escapeHtml(mentionMarkupToText(notification.data.text))}</p>`;
 
       break;
+    case Notification.Types.EXCEED_CARD_LIMIT_IN_LIST: {
+      const listName = sails.helpers.lists.resolveName(notification.data.list, t);
+      const targetUserName = notification.data.user ? notification.data.user.name : actorUser.name;
+      const count = notification.data.count || Notification.WIP + 1;
+
+      html = `<p>${t(
+        '%s is assigned to %s cards in %s on %s',
+        escapeHtml(targetUserName),
+        count,
+        escapeHtml(listName),
+        boardLink,
+      )}</p>`;
+
+      break;
+    }
     default:
       return null; // TODO: throw error?
   }

@@ -63,7 +63,7 @@
  *           example: "1357158568008091270"
  *         type:
  *           type: string
- *           enum: [moveCard, commentCard, addMemberToCard, mentionInComment]
+ *           enum: [moveCard, commentCard, addMemberToCard, mentionInComment, exceedCardLimitInList]
  *           description: Type of the notification
  *           example: commentCard
  *         data:
@@ -94,10 +94,28 @@ const Types = {
   COMMENT_CARD: 'commentCard',
   ADD_MEMBER_TO_CARD: 'addMemberToCard',
   MENTION_IN_COMMENT: 'mentionInComment',
+  EXCEED_CARD_LIMIT_IN_LIST: 'exceedCardLimitInList',
+};
+// límite para EXCEED_CARD_LIMIT_IN_LIST
+const WIP = 3;
+
+const DoingListNames = {
+  DOING: [
+    'doing',
+    'haciendo',
+    'en progreso',
+    'in progress',
+    'en curso',
+    'desarrollo',
+    'proceso',
+    'wip',
+  ],
 };
 
 module.exports = {
   Types,
+  WIP,
+  DoingListNames,
 
   attributes: {
     //  ╔═╗╦═╗╦╔╦╗╦╔╦╗╦╦  ╦╔═╗╔═╗

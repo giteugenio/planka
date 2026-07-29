@@ -9,6 +9,7 @@ import request from '../request';
 import selectors from '../../../selectors';
 import actions from '../../../actions';
 import api from '../../../api';
+import { NotificationTypes } from '../../../constants/Enums';
 
 export function* deleteAllNotifications() {
   yield put(actions.deleteAllNotifications());
@@ -27,7 +28,10 @@ export function* deleteAllNotifications() {
 export function* handleNotificationCreate(notification, users) {
   const { cardId } = yield select(selectors.selectPath);
 
-  if (notification.cardId === cardId) {
+  if (
+    notification.cardId === cardId &&
+    notification.type !== NotificationTypes.EXCEED_CARD_LIMIT_IN_LIST
+  ) {
     try {
       yield call(request, api.updateNotification, notification.id, {
         isRead: true,

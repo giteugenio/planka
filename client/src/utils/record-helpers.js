@@ -4,7 +4,7 @@
  */
 
 import { StaticUserIds } from '../constants/StaticUsers';
-import { ListTypes, SpecialListNames, UserRoles } from '../constants/Enums';
+import { ListTypes, DoneListNames, UserRoles } from '../constants/Enums';
 
 export const isUserStatic = (user) => [StaticUserIds.DELETED].includes(user.id);
 
@@ -24,5 +24,5 @@ export const isDoneList = (list) => {
   }
 
   const normalizedName = list.name.trim().toLowerCase();
-  return SpecialListNames.DONE.some((doneName) => doneName.toLowerCase() === normalizedName);
+  return DoneListNames.DONE.some((doneName) => doneName.toLowerCase() === normalizedName);
 };

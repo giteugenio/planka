@@ -16,7 +16,7 @@ import entryActions from '../../../entry-actions';
 import { mentionMarkupToText } from '../../../utils/mentions';
 import { isUserStatic } from '../../../utils/record-helpers';
 import Paths from '../../../constants/Paths';
-import { NotificationTypes } from '../../../constants/Enums';
+import { NotificationTypes, WIP } from '../../../constants/Enums';
 import TimeAgo from '../../common/TimeAgo';
 import UserAvatar from '../../users/UserAvatar';
 
@@ -139,6 +139,32 @@ const Item = React.memo(({ id, onClose }) => {
           <Link to={Paths.CARDS.replace(':id', notification.cardId)} onClick={onClose}>
             {cardName}
           </Link>
+        </Trans>
+      );
+
+      break;
+    }
+    case NotificationTypes.EXCEED_CARD_LIMIT_IN_LIST: {
+      const { list, user: targetUser, count } = notification.data;
+      const listName = list ? (list.name || t(`common.${list.type}`)) : '';
+      const userName = targetUser ? targetUser.name : creatorUserName;
+
+      contentNode = (
+        <Trans
+          i18nKey="common.userIsAssignedToCardsInList"
+          values={{
+            user: userName,
+            count: count || WIP + 1,
+            list: listName,
+            card: cardName,
+          }}
+        >
+          <span className={styles.author}>{userName}</span>
+          {` is assigned to ${count || WIP + 1} cards in ${listName} (`}
+          <Link to={Paths.CARDS.replace(':id', notification.cardId)} onClick={onClose}>
+            {cardName}
+          </Link>
+          {')'}
         </Trans>
       );
 
