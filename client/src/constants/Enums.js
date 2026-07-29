@@ -113,3 +113,7 @@ export const NotificationServiceFormats = {
   MARKDOWN: 'markdown',
   HTML: 'html',
 };
+
+export const SpecialListNames = {
+  DONE: ['done', 'hecho', 'finalizado', 'terminado', 'completado'],
+};

@@ -37,6 +37,21 @@
     top: 5px;
   }
 
+  .doneIcon {
+    position: absolute;
+    top: 1.0535rem;
+    right: 3.25rem;
+    font-size: 1.25rem;
+    cursor: pointer;
+    z-index: 1;
+    opacity: 0.8;
+    transition: opacity 0.1s ease;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
   .wrapper {
     margin: 2rem auto;
     width: 880px;

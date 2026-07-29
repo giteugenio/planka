@@ -14,7 +14,8 @@ import actions from '../../../actions';
 import api from '../../../api';
 import i18n from '../../../i18n';
 import { createLocalId } from '../../../utils/local-id';
-import { isListArchiveOrTrash, isListFinite } from '../../../utils/record-helpers';
+import { isDoneList, isListArchiveOrTrash, isListFinite } from '../../../utils/record-helpers';
+import { stopStopwatch } from '../../../utils/stopwatch';
 import ActionTypes from '../../../constants/ActionTypes';
 import ClipboardTypes from '../../../constants/ClipboardTypes';
 import ToastTypes from '../../../constants/ToastTypes';
@@ -238,6 +239,11 @@ export function* updateCard(id, data) {
 
     const card = yield select(selectors.selectCardById, id);
     const prevList = yield select(selectors.selectListById, card.listId);
+
+    if (isDoneList(list) && card.stopwatch && card.stopwatch.startedAt) {
+      // eslint-disable-next-line no-param-reassign
+      data.stopwatch = stopStopwatch(card.stopwatch);
+    }
 
     if (prevList.type === ListTypes.TRASH) {
       prevListId = null;
