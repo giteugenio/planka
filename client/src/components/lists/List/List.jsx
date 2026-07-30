@@ -19,7 +19,7 @@ import selectors from '../../../selectors';
 import entryActions from '../../../entry-actions';
 import { BoardShortcutsContext } from '../../../contexts';
 import DroppableTypes from '../../../constants/DroppableTypes';
-import { BoardMembershipRoles, ListTypes } from '../../../constants/Enums';
+import { BoardMembershipRoles, ListTypes, DoingListNames, DoneListNames, WIP } from '../../../constants/Enums';
 import { ListTypeIcons } from '../../../constants/Icons';
 import EditName from './EditName';
 import ActionsStep from './ActionsStep';
@@ -48,11 +48,17 @@ const List = React.memo(({ id, index }) => {
     [],
   );
 
+  const selectIsListExceededWipByListId = useMemo(
+    () => selectors.makeSelectIsListExceededWipByListId(),
+    [],
+  );
+
   const clipboard = useSelector(selectors.selectClipboard);
   const isFavoritesActive = useSelector(selectors.selectIsFavoritesActiveForCurrentUser);
 
   const list = useSelector((state) => selectListById(state, id));
   const cardIds = useSelector((state) => selectFilteredCardIdsByListId(state, id));
+  const isExceededWip = useSelector((state) => selectIsListExceededWipByListId(state, id));
 
   const { canEdit, canArchiveCards, canAddCard, canPasteCard, canDropCard } = useSelector(
     (state) => {
@@ -209,7 +215,11 @@ const List = React.memo(({ id, index }) => {
                                          jsx-a11y/no-static-element-interactions */}
             <div
               {...dragHandleProps} // eslint-disable-line react/jsx-props-no-spreading
-              className={classNames(styles.header, canEdit && styles.headerEditable)}
+              className={classNames(
+                styles.header,
+                canEdit && styles.headerEditable,
+                isExceededWip && styles.headerExceededWip,
+              )}
               onClick={handleHeaderClick}
             >
               {isEditNameOpened ? (

@@ -9,7 +9,7 @@ import orm from '../orm';
 import { selectPath } from './router';
 import { selectCurrentUserId } from './users';
 import { isLocalId } from '../utils/local-id';
-import { BoardContexts, ListTypes } from '../constants/Enums';
+import { BoardContexts, ListTypes, DoingListNames, WIP } from '../constants/Enums';
 
 export const makeSelectListById = () =>
   createSelector(
@@ -164,6 +164,45 @@ export const selectFilteredCardIdsForCurrentList = createSelector(
   },
 );
 
+export const makeSelectIsListExceededWipByListId = () =>
+  createSelector(
+    orm,
+    (_, id) => id,
+    ({ List }, id) => {
+      const listModel = List.withId(id);
+
+      if (!listModel || !listModel.name) {
+        return false;
+      }
+
+      const listName = listModel.name.trim().toLowerCase();
+      const isDoingList = DoingListNames.DOING.some(
+        (doingName) => doingName.toLowerCase() === listName,
+      );
+
+      if (!isDoingList) {
+        return false;
+      }
+
+      const cards = listModel.getCardsModelArray();
+      const userCardCounts = {};
+
+      for (const cardModel of cards) {
+        const users = cardModel.users.toRefArray();
+        for (const user of users) {
+          userCardCounts[user.id] = (userCardCounts[user.id] || 0) + 1;
+          if (userCardCounts[user.id] > WIP) {
+            return true;
+          }
+        }
+      }
+
+      return false;
+    },
+  );
+
+export const selectIsListExceededWipByListId = makeSelectIsListExceededWipByListId();
+
 export default {
   makeSelectListById,
   selectListById,
@@ -176,4 +215,6 @@ export default {
   selectCurrentList,
   selectFirstKanbanListId,
   selectFilteredCardIdsForCurrentList,
+  makeSelectIsListExceededWipByListId,
+  selectIsListExceededWipByListId,
 };

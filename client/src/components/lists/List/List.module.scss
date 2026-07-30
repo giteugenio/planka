@@ -112,6 +112,28 @@
     cursor: pointer;
   }
 
+  .headerExceededWip {
+    background-color: #eb5a46;
+    border-radius: 3px 3px 0 0;
+
+    .headerName {
+      color: #ffffff;
+    }
+
+    .headerButton {
+      color: #ffffff;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.2);
+        color: #ffffff;
+      }
+    }
+
+    .headerIcon {
+      color: #ffffff;
+    }
+  }
+
   .headerButton {
     background: none;
     box-shadow: none;
