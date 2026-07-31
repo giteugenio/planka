@@ -58,6 +58,31 @@ export default (state = initialState, { type, payload }) => {
       }
 
       return state;
+    case ActionTypes.CONFIG_UPDATE:
+      if (payload.data && payload.data.wipLimit !== undefined) {
+        return {
+          ...state,
+          bootstrap: {
+            ...state.bootstrap,
+            wipLimit: payload.data.wipLimit,
+          },
+        };
+      }
+
+      return state;
+    case ActionTypes.CONFIG_UPDATE__SUCCESS:
+    case ActionTypes.CONFIG_UPDATE_HANDLE:
+      if (payload.config && payload.config.wipLimit !== undefined) {
+        return {
+          ...state,
+          bootstrap: {
+            ...state.bootstrap,
+            wipLimit: payload.config.wipLimit,
+          },
+        };
+      }
+
+      return state;
     default:
       return state;
   }
