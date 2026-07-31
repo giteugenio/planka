@@ -73,6 +73,7 @@
  */
 
 const { idInput } = require('../../../utils/inputs');
+const { isDueDate } = require('../../../utils/validators');
 
 const Errors = {
   NOT_ENOUGH_RIGHTS: {
@@ -111,6 +112,11 @@ module.exports = {
     },
     isCompleted: {
       type: 'boolean',
+    },
+    dueDate: {
+      type: 'string',
+      custom: isDueDate,
+      allowNull: true,
     },
   },
 
@@ -182,7 +188,7 @@ module.exports = {
       }
     }
 
-    const values = _.pick(inputs, ['assigneeUserId', 'position', 'name', 'isCompleted']);
+    const values = _.pick(inputs, ['assigneeUserId', 'position', 'name', 'isCompleted', 'dueDate']);
 
     task = await sails.helpers.tasks.updateOne.with({
       project,

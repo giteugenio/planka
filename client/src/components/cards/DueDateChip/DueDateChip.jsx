@@ -4,7 +4,7 @@
  */
 
 import upperFirst from 'lodash/upperFirst';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
@@ -55,11 +55,21 @@ const STATUS_ICON_PROPS_BY_STATUS = {
 };
 
 const getStatus = (date, isCompleted) => {
+  if (!date) {
+    return null;
+  }
+
+  const dateObj = typeof date === 'string' ? new Date(date) : date;
+
+  if (!dateObj || typeof dateObj.getTime !== 'function' || Number.isNaN(dateObj.getTime())) {
+    return null;
+  }
+
   if (isCompleted) {
     return Statuses.COMPLETED;
   }
 
-  const secondsLeft = Math.floor((date.getTime() - new Date().getTime()) / 1000);
+  const secondsLeft = Math.floor((dateObj.getTime() - new Date().getTime()) / 1000);
 
   if (secondsLeft <= 0) {
     return Statuses.OVERDUE;
@@ -77,13 +87,18 @@ const DueDateChip = React.memo(
     const [t] = useTranslation();
     const forceUpdate = useForceUpdate();
 
+    const dateValue = useMemo(() => {
+      if (!value) return null;
+      return typeof value === 'string' ? new Date(value) : value;
+    }, [value]);
+
     const statusRef = useRef(null);
-    statusRef.current = withStatus ? getStatus(value, isCompleted) : null;
+    statusRef.current = withStatus ? getStatus(dateValue, isCompleted) : null;
 
     const intervalRef = useRef(null);
 
     const dateFormat = getDateFormat(
-      value,
+      dateValue,
       LONG_DATE_FORMAT_BY_SIZE[size],
       FULL_DATE_FORMAT_BY_SIZE[size],
     );
@@ -95,7 +110,7 @@ const DueDateChip = React.memo(
         statusRef.current !== Statuses.COMPLETED
       ) {
         intervalRef.current = setInterval(() => {
-          const status = getStatus(value, isCompleted);
+          const status = getStatus(dateValue, isCompleted);
 
           if (status !== statusRef.current) {
             forceUpdate();
@@ -112,7 +127,7 @@ const DueDateChip = React.memo(
           clearInterval(intervalRef.current);
         }
       };
-    }, [value, isCompleted, withStatus, forceUpdate]);
+    }, [dateValue, isCompleted, withStatus, forceUpdate]);
 
     const contentNode = (
       <span
@@ -124,7 +139,7 @@ const DueDateChip = React.memo(
         )}
       >
         {t(`format:${dateFormat}`, {
-          value,
+          value: dateValue,
           postProcess: 'formatDate',
         })}
         {withStatusIcon && statusRef.current && (
@@ -145,18 +160,20 @@ const DueDateChip = React.memo(
 );
 
 DueDateChip.propTypes = {
-  value: PropTypes.instanceOf(Date).isRequired,
+  value: PropTypes.oneOfType([PropTypes.instanceOf(Date), PropTypes.string]),
   size: PropTypes.oneOf(Object.values(Sizes)),
   isCompleted: PropTypes.bool.isRequired,
   isDisabled: PropTypes.bool,
-  withStatus: PropTypes.bool.isRequired,
+  withStatus: PropTypes.bool,
   withStatusIcon: PropTypes.bool,
   onClick: PropTypes.func,
 };
 
 DueDateChip.defaultProps = {
+  value: null,
   size: Sizes.MEDIUM,
   isDisabled: false,
+  withStatus: false,
   withStatusIcon: false,
   onClick: undefined,
 };

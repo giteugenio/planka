@@ -4,7 +4,14 @@
  */
 
 export default (date, longDateFormat = 'longDateTime', fullDateFormat = 'fullDateTime') => {
-  const year = date.getFullYear();
+  if (!date) {
+    return longDateFormat;
+  }
+  const dateObj = typeof date === 'string' ? new Date(date) : date;
+  if (!dateObj || typeof dateObj.getFullYear !== 'function' || Number.isNaN(dateObj.getTime())) {
+    return longDateFormat;
+  }
+  const year = dateObj.getFullYear();
   const currentYear = new Date().getFullYear();
 
   return year === currentYear ? longDateFormat : fullDateFormat;

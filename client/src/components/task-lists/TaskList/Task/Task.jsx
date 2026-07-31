@@ -22,9 +22,11 @@ import { ClosableContext } from '../../../../contexts';
 import Paths from '../../../../constants/Paths';
 import EditName from './EditName';
 import SelectAssigneeStep from './SelectAssigneeStep';
+import SelectDueDateStep from './SelectDueDateStep';
 import ActionsStep from './ActionsStep';
 import Linkify from '../../../common/Linkify';
 import UserAvatar from '../../../users/UserAvatar';
+import DueDateChip from '../../../cards/DueDateChip';
 
 import styles from './Task.module.scss';
 
@@ -115,6 +117,7 @@ const Task = React.memo(({ id, index }) => {
   }, [isEditNameOpened]);
 
   const SelectAssigneePopup = usePopupInClosableContext(SelectAssigneeStep);
+  const SelectDueDatePopup = usePopupInClosableContext(SelectDueDateStep);
   const ActionsPopup = usePopupInClosableContext(ActionsStep);
 
   return (
@@ -186,10 +189,26 @@ const Task = React.memo(({ id, index }) => {
                     )}
                   </span>
                 </span>
-                {(task.assigneeUserId || isEditable) && (
+                {(task.dueDate || task.assigneeUserId || isEditable) && (
                   <div className={classNames(styles.actions, isEditable && styles.actionsEditable)}>
+                    {task.dueDate && (
+                      isEditable ? (
+                        <SelectDueDatePopup taskId={id}>
+                          <DueDateChip value={task.dueDate ? new Date(task.dueDate) : null} size="tiny" isCompleted={task.isCompleted} />
+                        </SelectDueDatePopup>
+                      ) : (
+                        <DueDateChip value={task.dueDate ? new Date(task.dueDate) : null} size="tiny" isCompleted={task.isCompleted} />
+                      )
+                    )}
                     {isEditable ? (
                       <>
+                        {!task.dueDate && !task.linkedCardId && (
+                          <SelectDueDatePopup taskId={id}>
+                            <Button className={styles.button}>
+                              <Icon fitted name="calendar alternate outline" size="small" />
+                            </Button>
+                          </SelectDueDatePopup>
+                        )}
                         {!task.linkedCardId && (
                           <SelectAssigneePopup
                             currentUserId={task.assigneeUserId}
@@ -216,11 +235,13 @@ const Task = React.memo(({ id, index }) => {
                         </ActionsPopup>
                       </>
                     ) : (
-                      <UserAvatar
-                        id={task.assigneeUserId}
-                        size="tiny"
-                        className={styles.assigneeUserAvatar}
-                      />
+                      task.assigneeUserId && (
+                        <UserAvatar
+                          id={task.assigneeUserId}
+                          size="tiny"
+                          className={styles.assigneeUserAvatar}
+                        />
+                      )
                     )}
                   </div>
                 )}
