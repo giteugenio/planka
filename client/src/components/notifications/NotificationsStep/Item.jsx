@@ -16,7 +16,7 @@ import entryActions from '../../../entry-actions';
 import { mentionMarkupToText } from '../../../utils/mentions';
 import { isUserStatic } from '../../../utils/record-helpers';
 import Paths from '../../../constants/Paths';
-import { NotificationTypes, WIP } from '../../../constants/Enums';
+import { NotificationTypes } from '../../../constants/Enums';
 import TimeAgo from '../../common/TimeAgo';
 import UserAvatar from '../../users/UserAvatar';
 
@@ -34,6 +34,8 @@ const Item = React.memo(({ id, onClose }) => {
   );
 
   const card = useSelector((state) => selectCardById(state, notification.cardId));
+
+  const wipLimit = useSelector(selectors.selectWipLimit);
 
   const dispatch = useDispatch();
   const [t] = useTranslation();
@@ -154,13 +156,13 @@ const Item = React.memo(({ id, onClose }) => {
           i18nKey="common.userIsAssignedToCardsInList"
           values={{
             user: userName,
-            count: count || WIP + 1,
+            count: count || wipLimit + 1,
             list: listName,
             card: cardName,
           }}
         >
           <span className={styles.author}>{userName}</span>
-          {` is assigned to ${count || WIP + 1} cards in ${listName} (`}
+          {` is assigned to ${count || wipLimit + 1} cards in ${listName} (`}
           <Link to={Paths.CARDS.replace(':id', notification.cardId)} onClick={onClose}>
             {cardName}
           </Link>

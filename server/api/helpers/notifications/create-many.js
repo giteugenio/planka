@@ -128,7 +128,7 @@ const buildBodyByFormat = (board, card, notification, actorUser, t) => {
     case Notification.Types.EXCEED_CARD_LIMIT_IN_LIST: {
       const listName = sails.helpers.lists.resolveName(notification.data.list, t);
       const targetUserName = notification.data.user ? notification.data.user.name : actorUser.name;
-      const count = notification.data.count || Notification.WIP + 1;
+      const count = notification.data.count || Notification.DEFAULT_WIP + 1;
 
       return {
         text: t(
@@ -219,7 +219,7 @@ const buildEmail = (board, card, notification, actorUser, notifiableUser, t) => 
     case Notification.Types.EXCEED_CARD_LIMIT_IN_LIST: {
       const listName = sails.helpers.lists.resolveName(notification.data.list, t);
       const targetUserName = notification.data.user ? notification.data.user.name : actorUser.name;
-      const count = notification.data.count || Notification.WIP + 1;
+      const count = notification.data.count || Notification.DEFAULT_WIP + 1;
 
       html = `<p>${t(
         '%s is assigned to %s cards in %s on %s',

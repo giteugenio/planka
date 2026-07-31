@@ -97,7 +97,7 @@ const Types = {
   EXCEED_CARD_LIMIT_IN_LIST: 'exceedCardLimitInList',
 };
 // límite para EXCEED_CARD_LIMIT_IN_LIST
-const WIP = 3;
+const DEFAULT_WIP = 3;
 
 const DoingListNames = {
   DOING: [
@@ -114,7 +114,7 @@ const DoingListNames = {
 
 module.exports = {
   Types,
-  WIP,
+  DEFAULT_WIP,
   DoingListNames,
 
   attributes: {

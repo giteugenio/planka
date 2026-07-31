@@ -19,7 +19,7 @@ import selectors from '../../../selectors';
 import entryActions from '../../../entry-actions';
 import { BoardShortcutsContext } from '../../../contexts';
 import DroppableTypes from '../../../constants/DroppableTypes';
-import { BoardMembershipRoles, ListTypes, DoingListNames, DoneListNames, WIP } from '../../../constants/Enums';
+import { BoardMembershipRoles, ListTypes, DoingListNames, DoneListNames } from '../../../constants/Enums';
 import { ListTypeIcons } from '../../../constants/Icons';
 import EditName from './EditName';
 import ActionsStep from './ActionsStep';

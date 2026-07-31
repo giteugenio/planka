@@ -52,6 +52,10 @@
  *                   nullable: true
  *                   description: Maximum number of active users allowed (conditionally added for admins if configured)
  *                   example: 100
+ *                 wipLimit:
+ *                   type: number
+ *                   description: Maximum number of cards a single user may be assigned to in a "doing" list before the WIP limit is considered exceeded
+ *                   example: 3
  *                 customerPanelUrl:
  *                   type: string
  *                   format: uri
@@ -76,9 +80,10 @@ module.exports = {
 
     const internalConfig = await InternalConfig.qm.getOneMain();
     const oidc = await sails.hooks.oidc.getBootstrap();
+    const wipLimit = await sails.helpers.config.getWipLimit();
 
     return {
-      item: sails.helpers.bootstrap.presentOne(internalConfig, oidc, currentUser),
+      item: sails.helpers.bootstrap.presentOne(internalConfig, oidc, currentUser, wipLimit),
     };
   },
 };

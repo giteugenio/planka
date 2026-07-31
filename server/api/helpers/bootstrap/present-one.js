@@ -17,6 +17,9 @@ module.exports = {
     user: {
       type: 'ref',
     },
+    wipLimit: {
+      type: 'number',
+    },
   },
 
   fn(inputs) {
@@ -24,6 +27,7 @@ module.exports = {
       oidc: inputs.oidc,
       termsLanguages: sails.hooks.terms.getLanguages(),
       version: sails.config.custom.version,
+      wipLimit: inputs.wipLimit,
     };
 
     if (inputs.user && inputs.user.role === User.Roles.ADMIN) {

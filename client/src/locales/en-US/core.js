@@ -373,6 +373,10 @@ export default {
       visualTaskManagementWithLists: 'Visual task management with lists.',
       webhooks: 'Webhooks',
       whatsNew_title: "What's New",
+      wip: 'WIP Limit',
+      wipLimit: 'WIP limit',
+      wipLimitDescription:
+        'Maximum number of cards a single user may be assigned to in a "doing" list before the limit is considered exceeded. Leave empty to use the default of 3.',
       withoutBaseGroup: 'Without base group',
       writeComment: 'Write a comment...',
     },

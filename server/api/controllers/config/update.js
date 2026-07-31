@@ -64,6 +64,12 @@
  *                 nullable: true
  *                 description: Default "from" used for outgoing SMTP emails
  *                 example: no-reply@example.com
+ *               wipLimit:
+ *                 type: number
+ *                 minimum: 1
+ *                 nullable: true
+ *                 description: Maximum number of cards a single user may be assigned to in a "doing" list before the WIP limit is considered exceeded (null falls back to the default of 3)
+ *                 example: 3
  *     responses:
  *       200:
  *         description: Configuration updated successfully
@@ -122,6 +128,11 @@ module.exports = {
       maxLength: 256,
       allowNull: true,
     },
+    wipLimit: {
+      type: 'number',
+      min: 1,
+      allowNull: true,
+    },
   },
 
   async fn(inputs) {
@@ -136,6 +147,7 @@ module.exports = {
       'smtpUser',
       'smtpPassword',
       'smtpFrom',
+      'wipLimit',
     ]);
 
     const config = await sails.helpers.config.updateMain.with({

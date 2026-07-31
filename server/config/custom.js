@@ -49,6 +49,7 @@ module.exports.custom = {
 
   storageLimit: envToBytes(process.env.STORAGE_LIMIT),
   activeUsersLimit: envToNumber(process.env.ACTIVE_USERS_LIMIT),
+  wipLimit: envToNumber(process.env.WIP_LIMIT),
 
   // Location to receive uploaded files in. Default (non-string value) is a Sails-specific location.
   uploadsTempPath: null,

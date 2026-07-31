@@ -217,13 +217,14 @@ module.exports = {
           );
 
           const adminUserIds = await sails.helpers.users.getAllActiveIds(User.Roles.ADMIN);
+          const wipLimit = await sails.helpers.config.getWipLimit();
 
           for (const cardUserId of cardUserIds) {
             const userCardsCountInList = destinationMemberships.filter(
               (cm) => cm.userId === cardUserId,
             ).length;
 
-            if (userCardsCountInList > Notification.WIP) {
+            if (userCardsCountInList > wipLimit) {
               const assignedUser = await User.qm.getOneById(cardUserId);
               const recipientUserIds = _.uniq([...adminUserIds, cardUserId]);
 

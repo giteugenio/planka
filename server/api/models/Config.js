@@ -61,6 +61,11 @@
  *           nullable: true
  *           description: Default "from" used for outgoing SMTP emails
  *           example: no-reply@example.com
+ *         wipLimit:
+ *           type: number
+ *           nullable: true
+ *           description: Maximum number of cards a single user may be assigned to in a "doing" list before the WIP limit is considered exceeded (null falls back to the default of 3)
+ *           example: 3
  *         createdAt:
  *           type: string
  *           format: date-time
@@ -136,6 +141,11 @@ module.exports = {
       type: 'string',
       allowNull: true,
       columnName: 'smtp_from',
+    },
+    wipLimit: {
+      type: 'number',
+      allowNull: true,
+      columnName: 'wip_limit',
     },
 
     //  ╔═╗╔╦╗╔╗ ╔═╗╔╦╗╔═╗

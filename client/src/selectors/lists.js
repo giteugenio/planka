@@ -8,8 +8,9 @@ import { createSelector } from 'redux-orm';
 import orm from '../orm';
 import { selectPath } from './router';
 import { selectCurrentUserId } from './users';
+import { selectWipLimit } from './common';
 import { isLocalId } from '../utils/local-id';
-import { BoardContexts, ListTypes, DoingListNames, WIP } from '../constants/Enums';
+import { BoardContexts, ListTypes, DoingListNames } from '../constants/Enums';
 
 export const makeSelectListById = () =>
   createSelector(
@@ -168,7 +169,8 @@ export const makeSelectIsListExceededWipByListId = () =>
   createSelector(
     orm,
     (_, id) => id,
-    ({ List }, id) => {
+    (state) => selectWipLimit(state),
+    ({ List }, id, wipLimit) => {
       const listModel = List.withId(id);
 
       if (!listModel || !listModel.name) {
@@ -187,17 +189,15 @@ export const makeSelectIsListExceededWipByListId = () =>
       const cards = listModel.getCardsModelArray();
       const userCardCounts = {};
 
-      for (const cardModel of cards) {
+      // Iteración con .some() para evitar 'for...of' y mantener el short-circuit
+      return cards.some((cardModel) => {
         const users = cardModel.users.toRefArray();
-        for (const user of users) {
-          userCardCounts[user.id] = (userCardCounts[user.id] || 0) + 1;
-          if (userCardCounts[user.id] > WIP) {
-            return true;
-          }
-        }
-      }
 
-      return false;
+        return users.some((user) => {
+          userCardCounts[user.id] = (userCardCounts[user.id] || 0) + 1;
+          return userCardCounts[user.id] > wipLimit;
+        });
+      });
     },
   );
 

@@ -36,6 +36,27 @@ module.exports = {
       );
     });
 
+    const wipLimit = await sails.helpers.config.getWipLimit();
+
+    const allUserIds = await sails.helpers.users.getAllActiveIds([
+      User.Roles.ADMIN,
+      User.Roles.PROJECT_OWNER,
+      User.Roles.BOARD_USER,
+    ]);
+
+    allUserIds.forEach((userId) => {
+      sails.sockets.broadcast(
+        `user:${userId}`,
+        'bootstrapUpdate',
+        {
+          item: {
+            wipLimit,
+          },
+        },
+        inputs.request,
+      );
+    });
+
     const webhooks = await Webhook.qm.getAll();
 
     // TODO: with prevData?

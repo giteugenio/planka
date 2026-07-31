@@ -108,8 +108,6 @@ export const NotificationTypes = {
   MENTION_IN_COMMENT: 'mentionInComment',
   EXCEED_CARD_LIMIT_IN_LIST: 'exceedCardLimitInList',
 };
-// para la condición de EXCEED_CARD_LIMIT_IN_LIST
-export const WIP = 3;
 
 export const NotificationServiceFormats = {
   TEXT: 'text',

@@ -13,6 +13,8 @@ export const selectOidcBootstrap = (state) => selectBootstrap(state).oidc;
 
 export const selectActiveUsersLimit = (state) => selectBootstrap(state).activeUsersLimit;
 
+export const selectWipLimit = (state) => selectBootstrap(state).wipLimit ?? 3;
+
 export const selectAccessToken = ({ auth: { accessToken } }) => accessToken;
 
 export const selectAuthenticateForm = ({ ui: { authenticateForm } }) => authenticateForm;
@@ -29,6 +31,7 @@ export default {
   selectBootstrap,
   selectOidcBootstrap,
   selectActiveUsersLimit,
+  selectWipLimit,
   selectAccessToken,
   selectAuthenticateForm,
   selectUserCreateForm,

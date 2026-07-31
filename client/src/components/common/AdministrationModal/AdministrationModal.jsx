@@ -14,6 +14,7 @@ import entryActions from '../../../entry-actions';
 import { useClosableModal } from '../../../hooks';
 import UsersPane from './UsersPane';
 import SmtpPane from './SmtpPane';
+import WipPane from './WipPane';
 import WebhooksPane from './WebhooksPane';
 
 import styles from './AdministrationModal.module.scss';
@@ -49,6 +50,14 @@ const AdministrationModal = React.memo(() => {
         context: 'title',
       }),
       render: () => <SmtpPane />,
+    });
+  }
+  if (config.wipLimit !== undefined) {
+    panes.push({
+      menuItem: t('common.wip', {
+        context: 'title',
+      }),
+      render: () => <WipPane />,
     });
   }
   panes.push({

@@ -388,6 +388,10 @@ export default {
       visualTaskManagementWithLists: 'Gestión visual de tareas con listas.',
       webhooks: 'Webhooks',
       whatsNew_title: 'Novedades',
+      wip: 'Límite WIP',
+      wipLimit: 'Límite WIP',
+      wipLimitDescription:
+        'Número máximo de tarjetas que un usuario puede tener asignadas en una lista «doing» antes de considerarse superado el límite. Déjalo vacío para usar el valor por defecto de 3.',
       withoutBaseGroup: 'Sin grupo base',
       writeComment: 'Escribe un comentario...',
     },

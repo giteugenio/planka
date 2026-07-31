@@ -14,12 +14,20 @@ module.exports = {
   },
 
   fn(inputs) {
+    const fieldsToOmit = [];
+
     if (sails.config.custom.smtpHost) {
-      return _.omit(inputs.record, Config.SMTP_FIELD_NAMES);
+      fieldsToOmit.push(...Config.SMTP_FIELD_NAMES);
+    } else if (inputs.record.smtpPassword) {
+      fieldsToOmit.push('smtpPassword');
     }
 
-    if (inputs.record.smtpPassword) {
-      return _.omit(inputs.record, 'smtpPassword');
+    if (sails.config.custom.wipLimit !== null) {
+      fieldsToOmit.push('wipLimit');
+    }
+
+    if (fieldsToOmit.length > 0) {
+      return _.omit(inputs.record, fieldsToOmit);
     }
 
     return inputs.record;
