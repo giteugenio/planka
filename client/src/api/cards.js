@@ -33,16 +33,25 @@ export const transformCard = (card) => ({
   }),
 });
 
+const safeToISOString = (val) => {
+  if (!val) return val;
+  if (typeof val.toISOString === 'function') {
+    return val.toISOString();
+  }
+  const date = new Date(val);
+  return Number.isNaN(date.getTime()) ? val : date.toISOString();
+};
+
 export const transformCardData = (data) => ({
   ...data,
   ...(data.dueDate && {
-    dueDate: data.dueDate.toISOString(),
+    dueDate: safeToISOString(data.dueDate),
   }),
   ...(data.stopwatch && {
     stopwatch: {
       ...data.stopwatch,
       ...(data.stopwatch.startedAt && {
-        startedAt: data.stopwatch.startedAt.toISOString(),
+        startedAt: safeToISOString(data.stopwatch.startedAt),
       }),
     },
   }),

@@ -13,16 +13,24 @@ const DAY = 1000 * 60 * 60 * 24;
 
 const isExpired = (value) => value <= Date.now() - DAY;
 
-const ExpirableTime = React.memo(({ children, date, verboseDate, tooltip, ...props }) => (
-  <time
-    {...props} // eslint-disable-line react/jsx-props-no-spreading
-    dateTime={date.toISOString()}
-    title={tooltip ? verboseDate : undefined}
-    className={classNames(isExpired(date) && styles.expired)}
-  >
-    {children}
-  </time>
-));
+const ExpirableTime = React.memo(({ children, date, verboseDate, tooltip, ...props }) => {
+  const dateObj = date instanceof Date ? date : new Date(date);
+  const isoString =
+    typeof dateObj.toISOString === 'function' && !Number.isNaN(dateObj.getTime())
+      ? dateObj.toISOString()
+      : String(date);
+
+  return (
+    <time
+      {...props} // eslint-disable-line react/jsx-props-no-spreading
+      dateTime={isoString}
+      title={tooltip ? verboseDate : undefined}
+      className={classNames(isExpired(dateObj) && styles.expired)}
+    >
+      {children}
+    </time>
+  );
+});
 
 ExpirableTime.propTypes = {
   children: PropTypes.string.isRequired,

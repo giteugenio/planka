@@ -222,6 +222,8 @@ export default {
       forTeamBasedProjects: 'Para proyectos en equipo.',
       fromComputer_title: 'Desde el ordenador',
       fromTrello: 'Desde Trello',
+      gantt: 'Gantt',
+      ganttChartDiagram: 'Diagrama de Gantt interactivo.',
       fullKeyIsHiddenForSecurityReasons:
         'La clave completa está oculta por razones de seguridad. Regénérala para crear una nueva.',
       general: 'General',

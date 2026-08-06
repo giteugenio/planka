@@ -23,24 +23,42 @@ const TOAST_BY_TYPE = {
 
 const Toaster = React.memo(() => (
   <HotToaster>
-    {(toast) => (
-      <HotToastBar
-        toast={toast}
-        style={{
-          background: 'transparent',
-          borderRadius: 0,
-          maxWidth: '90%',
-          padding: 0,
-        }}
-      >
-        {() => {
-          const Toast = TOAST_BY_TYPE[toast.message.type];
+    {(toast) => {
+      const Toast =
+        toast.message && typeof toast.message === 'object'
+          ? TOAST_BY_TYPE[toast.message.type]
+          : undefined;
 
-          // eslint-disable-next-line react/jsx-props-no-spreading
-          return <Toast {...toast.message.params} id={toast.id} />;
-        }}
-      </HotToastBar>
-    )}
+      return (
+        <HotToastBar
+          toast={toast}
+          style={
+            Toast
+              ? {
+                  background: 'transparent',
+                  borderRadius: 0,
+                  maxWidth: '90%',
+                  padding: 0,
+                }
+              : undefined
+          }
+        >
+          {({ icon, message }) => {
+            if (Toast) {
+              // eslint-disable-next-line react/jsx-props-no-spreading
+              return <Toast {...toast.message.params} id={toast.id} />;
+            }
+
+            return (
+              <>
+                {icon}
+                {message}
+              </>
+            );
+          }}
+        </HotToastBar>
+      );
+    }}
   </HotToaster>
 ));
 

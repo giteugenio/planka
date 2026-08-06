@@ -211,6 +211,8 @@ export default {
       forTeamBasedProjects: 'For team-based projects.',
       fromComputer_title: 'From Computer',
       fromTrello: 'From Trello',
+      gantt: 'Gantt',
+      ganttChartDiagram: 'Interactive Gantt chart diagram.',
       fullKeyIsHiddenForSecurityReasons:
         'The full key is hidden for security reasons. Regenerate it to create a new one.',
       general: 'General',

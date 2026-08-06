@@ -27,6 +27,7 @@ export function* fetchBoardByCurrentPath() {
   let cardMemberships2;
   let cardLabels1;
   let cardLabels2;
+  let cardDependencies;
   let taskLists1;
   let taskLists2;
   let tasks1;
@@ -74,6 +75,7 @@ export function* fetchBoardByCurrentPath() {
           users: users2,
           cardMemberships: cardMemberships2,
           cardLabels: cardLabels2,
+          cardDependencies,
           taskLists: taskLists2,
           tasks: tasks2,
           attachments: attachments2,
@@ -96,6 +98,7 @@ export function* fetchBoardByCurrentPath() {
     users: mergeRecords(users1, users2),
     cardMemberships: mergeRecords(cardMemberships1, cardMemberships2),
     cardLabels: mergeRecords(cardLabels1, cardLabels2),
+    cardDependencies,
     taskLists: mergeRecords(taskLists1, taskLists2),
     tasks: mergeRecords(tasks1, tasks2),
     attachments: mergeRecords(attachments1, attachments2),

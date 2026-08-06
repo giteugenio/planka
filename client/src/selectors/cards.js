@@ -480,6 +480,40 @@ export const selectIsCurrentUserInCurrentCard = createSelector(
   },
 );
 
+export const makeSelectDependencyCardIdsByCardId = () =>
+  createSelector(
+    orm,
+    (_, id) => id,
+    ({ CardDependency }, id) => {
+      if (!CardDependency) return [];
+      return CardDependency.filter({ cardId: id })
+        .toRefArray()
+        .map((dep) => dep.dependencyCardId);
+    },
+  );
+
+export const selectDependencyCardIdsByCardId = makeSelectDependencyCardIdsByCardId();
+
+export const makeSelectCardProgressByCardId = () =>
+  createSelector(
+    orm,
+    (_, id) => id,
+    ({ Card }, id) => {
+      const cardModel = Card.withId(id);
+      if (!cardModel) return 0;
+
+      const tasks = cardModel.taskLists
+        .toModelArray()
+        .flatMap((taskList) => taskList.tasks.toModelArray());
+      if (tasks.length === 0) return 0;
+
+      const completed = tasks.filter((t) => t.isCompleted).length;
+      return Math.round((completed / tasks.length) * 100);
+    },
+  );
+
+export const selectCardProgressByCardId = makeSelectCardProgressByCardId();
+
 export default {
   makeSelectCardById,
   selectCardById,
@@ -489,6 +523,10 @@ export default {
   selectUserIdsByCardId,
   makeSelectLabelIdsByCardId,
   selectLabelIdsByCardId,
+  makeSelectDependencyCardIdsByCardId,
+  selectDependencyCardIdsByCardId,
+  makeSelectCardProgressByCardId,
+  selectCardProgressByCardId,
   makeSelectShownOnFrontOfCardTaskListIdsByCardId,
   selectShownOnFrontOfCardTaskListIdsByCardId,
   makeSelectAttachmentsTotalByCardId,

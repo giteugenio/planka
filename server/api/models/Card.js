@@ -175,6 +175,10 @@ module.exports = {
       type: 'ref',
       columnName: 'due_date',
     },
+    startDate: {
+      type: 'ref',
+      columnName: 'start_date',
+    },
     isDueCompleted: {
       type: 'boolean',
       allowNull: true,
@@ -243,6 +247,16 @@ module.exports = {
       collection: 'Label',
       via: 'cardId',
       through: 'CardLabel',
+    },
+    dependencies: {
+      collection: 'Card',
+      via: 'cardId',
+      through: 'CardDependency',
+    },
+    dependents: {
+      collection: 'Card',
+      via: 'dependencyCardId',
+      through: 'CardDependency',
     },
     taskLists: {
       collection: 'TaskList',

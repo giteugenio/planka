@@ -1,0 +1,94 @@
+/*!
+ * Copyright (c) 2024 PLANKA Software GmbH
+ * Licensed under the Fair Use License: https://github.com/plankanban/planka/blob/master/LICENSE.md
+ */
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 100px);
+  width: 100%;
+  padding: 16px;
+  background-color: var(--background-color-primary, #ffffff);
+  overflow: hidden;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+
+  .modeGroup {
+    display: flex;
+    gap: 4px;
+  }
+}
+
+.ganttContainer {
+  flex: 1;
+  overflow: auto;
+  border: 1px solid var(--border-color, #e0e0e0);
+  border-radius: 4px;
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--text-color-secondary, #757575);
+  font-size: 16px;
+}
+
+.dependencyControls {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background-color: var(--background-color-secondary, #f5f5f5);
+  padding: 8px 16px;
+  border-radius: 4px;
+}
+
+.dependencyForm {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.dependencyList {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 13px;
+}
+
+.dependencyListLabel {
+  font-weight: 600;
+  color: var(--text-color-secondary, #666);
+}
+
+.dependencyTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--background-color-tertiary, #e0e0e0);
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+}
+
+.deleteIcon {
+  cursor: pointer;
+  margin-left: 4px !important;
+  opacity: 0.7;
+
+  &:hover {
+    opacity: 1;
+    color: #db2828;
+  }
+}
