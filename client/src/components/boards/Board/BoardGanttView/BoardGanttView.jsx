@@ -238,6 +238,13 @@ const BoardGanttView = React.memo(({ cardIds }) => {
     [dispatch, isEditor],
   );
 
+  // Handle clicking a task in Gantt
+  const handleTaskClick = useCallback((task) => {
+    if (task && task.id) {
+      setSelectedCardId(String(task.id));
+    }
+  }, []);
+
   // Handle adding a dependency interactively
   const handleAddDependency = useCallback(() => {
     if (!selectedCardId || !selectedDependencyId) return;
@@ -390,6 +397,7 @@ const BoardGanttView = React.memo(({ cardIds }) => {
           tasks={ganttTasks}
           viewMode={viewMode}
           onDateChange={handleDateChange}
+          onClick={handleTaskClick}
           listCellWidth="200px"
           columnWidth={60}
           locale="es"
