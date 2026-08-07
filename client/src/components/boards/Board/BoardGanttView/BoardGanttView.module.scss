@@ -31,6 +31,21 @@
   overflow: auto;
   border: 1px solid var(--border-color, #e0e0e0);
   border-radius: 4px;
+
+  :global {
+    svg {
+      display: block;
+      vertical-align: top;
+    }
+
+    ._1nBOt {
+      height: 50px !important;
+    }
+
+    ._3_ygE {
+      border-bottom: none !important;
+    }
+  }
 }
 
 .emptyState {
