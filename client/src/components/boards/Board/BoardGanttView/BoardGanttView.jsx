@@ -62,7 +62,7 @@ const BoardGanttView = React.memo(({ cardIds }) => {
   const updateTimeoutRef = useRef(null);
   // Lock mechanism: when a date change is dispatched, freeze ganttTasks output
   // to prevent gantt-task-react's internal useEffect from cascading into an infinite loop
-  const isUpdatingRef = useRef(false);
+  const [isUpdating, setIsUpdating] = useState(false);
   const unlockTimeoutRef = useRef(null);
 
   // Build dependency map for circular dependency checks
@@ -78,7 +78,7 @@ const BoardGanttView = React.memo(({ cardIds }) => {
   const ganttTasks = useMemo(() => {
     // While a date change dispatch is in flight, return stale tasks to prevent
     // gantt-task-react from entering a useEffect → setState infinite loop
-    if (isUpdatingRef.current && prevGanttTasksRef.current.length > 0) {
+    if (isUpdating && prevGanttTasksRef.current.length > 0) {
       return prevGanttTasksRef.current;
     }
 
@@ -170,7 +170,7 @@ const BoardGanttView = React.memo(({ cardIds }) => {
     prevCanonicalTasksRef.current = canonicalTasks;
     prevGanttTasksRef.current = newGanttTasks;
     return newGanttTasks;
-  }, [cards, isEditor, dependenciesMap]);
+  }, [cards, isEditor, dependenciesMap, isUpdating]);
 
   // Handle date change when dragging or resizing bars in Gantt (stable callback reference)
   const handleDateChange = useCallback(
@@ -211,7 +211,7 @@ const BoardGanttView = React.memo(({ cardIds }) => {
       const dueDate = dueDateObj ? dueDateObj.toISOString() : null;
 
       // Activate update lock: freeze ganttTasks output to prevent infinite re-render loop
-      isUpdatingRef.current = true;
+      setIsUpdating(true);
 
       if (unlockTimeoutRef.current) {
         clearTimeout(unlockTimeoutRef.current);
@@ -231,7 +231,7 @@ const BoardGanttView = React.memo(({ cardIds }) => {
 
         // Release the lock after gantt-task-react has had time to settle
         unlockTimeoutRef.current = setTimeout(() => {
-          isUpdatingRef.current = false;
+          setIsUpdating(false);
         }, 300);
       }, 50);
     },
