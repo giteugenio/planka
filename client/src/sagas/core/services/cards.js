@@ -240,9 +240,17 @@ export function* updateCard(id, data) {
     const card = yield select(selectors.selectCardById, id);
     const prevList = yield select(selectors.selectListById, card.listId);
 
-    if (isDoneList(list) && card.stopwatch && card.stopwatch.startedAt) {
-      // eslint-disable-next-line no-param-reassign
-      data.stopwatch = stopStopwatch(card.stopwatch);
+    if (isDoneList(list)) {
+      if (card.stopwatch && card.stopwatch.startedAt) {
+        // eslint-disable-next-line no-param-reassign
+        data.stopwatch = stopStopwatch(card.stopwatch);
+      }
+
+      const dueDate = data.dueDate !== undefined ? data.dueDate : card.dueDate;
+      if (dueDate && !card.isDueCompleted && data.isDueCompleted === undefined) {
+        // eslint-disable-next-line no-param-reassign
+        data.isDueCompleted = true;
+      }
     }
 
     if (prevList.type === ListTypes.TRASH) {
