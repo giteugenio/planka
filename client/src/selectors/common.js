@@ -11,18 +11,10 @@ export const selectIsInitializing = ({ common: { isInitializing } }) => isInitia
 
 export const selectBootstrap = ({ common: { bootstrap } }) => bootstrap;
 
-export const selectOidcBootstrap = (state) => selectBootstrap(state)?.oidc;
-
 export const selectActiveUsersLimit = (state) => selectBootstrap(state)?.activeUsersLimit;
 
-export const selectWipLimit = (state) => {
-  const config = selectConfig(state);
-  if (config && config.wipLimit !== undefined && config.wipLimit !== null) {
-    return config.wipLimit;
-  }
-
-  return selectBootstrap(state)?.wipLimit ?? 3;
-};
+export const selectUserTrustedDevicesState = ({ ui: { userTrustedDevicesState } }) =>
+  userTrustedDevicesState;
 
 export const selectAccessToken = ({ auth: { accessToken } }) => accessToken;
 
@@ -34,17 +26,25 @@ export const selectProjectCreateForm = ({ ui: { projectCreateForm } }) => projec
 
 export const selectSmtpTestState = ({ ui: { smtpTestState } }) => smtpTestState;
 
+export const selectWipLimit = (state) => {
+  const config = selectConfig(state);
+  if (config && config.wipLimit !== undefined && config.wipLimit !== null) {
+    return config.wipLimit;
+  }
+
+  return selectBootstrap(state)?.wipLimit ?? 3;
+};
+
 export default {
   selectIsSocketDisconnected,
   selectIsInitializing,
   selectBootstrap,
-  selectOidcBootstrap,
   selectActiveUsersLimit,
-  selectWipLimit,
+  selectUserTrustedDevicesState,
   selectAccessToken,
   selectAuthenticateForm,
   selectUserCreateForm,
   selectProjectCreateForm,
   selectSmtpTestState,
+  selectWipLimit,
 };
-
