@@ -4,7 +4,7 @@
  */
 
 import isEmail from 'validator/lib/isEmail';
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
@@ -57,6 +57,7 @@ const AddStep = React.memo(({ onClose }) => {
   const dispatch = useDispatch();
   const [t] = useTranslation();
   const wasSubmitting = usePrevious(isSubmitting);
+  const [isUsernameInvalid, setIsUsernameInvalid] = useState(false);
 
   const [data, handleFieldChange, setData] = useForm(() => ({
     email: '',
@@ -74,6 +75,16 @@ const AddStep = React.memo(({ onClose }) => {
   const [passwordFieldRef, handlePasswordFieldRef] = useNestedRef('inputRef');
   const [nameFieldRef, handleNameFieldRef] = useNestedRef('inputRef');
   const [usernameFieldRef, handleUsernameFieldRef] = useNestedRef('inputRef');
+
+  const handleUsernameChange = useCallback(
+    (e, field) => {
+      if (isUsernameInvalid) {
+        setIsUsernameInvalid(false);
+      }
+      handleFieldChange(e, field);
+    },
+    [handleFieldChange, isUsernameInvalid],
+  );
 
   const handleSubmit = useCallback(() => {
     const cleanData = {
@@ -99,9 +110,11 @@ const AddStep = React.memo(({ onClose }) => {
     }
 
     if (cleanData.username && !isUsername(cleanData.username)) {
+      setIsUsernameInvalid(true);
       usernameFieldRef.current.select();
       return;
     }
+    setIsUsernameInvalid(false);
 
     dispatch(entryActions.createUser(cleanData));
   }, [dispatch, data, emailFieldRef, passwordFieldRef, nameFieldRef, usernameFieldRef]);
@@ -224,8 +237,11 @@ const AddStep = React.memo(({ onClose }) => {
             maxLength={32}
             readOnly={isSubmitting}
             className={styles.field}
-            onChange={handleFieldChange}
+            onChange={handleUsernameChange}
           />
+          {isUsernameInvalid && (
+            <div className={styles.fieldError}>{t('common.invalidUsernameFormat')}</div>
+          )}
           <div className={styles.controls}>
             <Button
               positive

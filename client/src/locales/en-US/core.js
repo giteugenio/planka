@@ -277,6 +277,7 @@ export default {
       importBoard_title: 'Import Board',
       information: 'Information',
       invalidCurrentPassword: 'Invalid current password',
+      invalidUsernameFormat: 'Must be 3-32 characters: letters, numbers, underscores, and periods',
       kanban: 'Kanban',
       labels: 'Labels',
       language: 'Language',

@@ -235,6 +235,8 @@ export default {
       importBoard_title: 'Importar tablero',
       information: 'Información',
       invalidCurrentPassword: 'Contraseña actual incorrecta',
+      invalidUsernameFormat:
+        'Debe tener entre 3 y 32 caracteres (solo letras, números, puntos o guiones bajos)',
       kanban: 'Kanban',
       labels: 'Etiquetas',
       language: 'Idioma',
