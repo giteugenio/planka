@@ -133,8 +133,8 @@ const BoardGanttView = React.memo(({ cardIds }) => {
         ? {
             backgroundColor: styles.dueCompletedBg,
             backgroundSelectedColor: styles.dueCompletedBgSelected,
-            progressColor,
-            progressSelectedColor,
+            progressColor: styles.dueCompletedBg,
+            progressSelectedColor: styles.dueCompletedBgSelected,
           }
         : {
             progressColor,
