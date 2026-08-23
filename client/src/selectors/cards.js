@@ -484,15 +484,67 @@ export const makeSelectDependencyCardIdsByCardId = () =>
   createSelector(
     orm,
     (_, id) => id,
-    ({ CardDependency }, id) => {
-      if (!CardDependency) return [];
+    ({ Card, CardDependency }, id) => {
+      if (!CardDependency || !Card) return [];
       return CardDependency.filter({ cardId: id })
         .toRefArray()
-        .map((dep) => dep.dependencyCardId);
+        .map((dep) => dep.dependencyCardId)
+        .filter((dependencyCardId) => {
+          const cardModel = Card.withId(dependencyCardId);
+          return cardModel && !cardModel.isDueCompleted;
+        });
     },
   );
 
 export const selectDependencyCardIdsByCardId = makeSelectDependencyCardIdsByCardId();
+
+export const makeSelectDependentCardIdsByCardId = () =>
+  createSelector(
+    orm,
+    (_, id) => id,
+    ({ Card, CardDependency }, id) => {
+      if (!CardDependency || !Card) return [];
+      const cardModel = Card.withId(id);
+      if (!cardModel || cardModel.isDueCompleted) {
+        return [];
+      }
+      return CardDependency.filter({ dependencyCardId: id })
+        .toRefArray()
+        .map((dep) => dep.cardId);
+    },
+  );
+
+export const selectDependentCardIdsByCardId = makeSelectDependentCardIdsByCardId();
+
+export const selectDependencyCardIdsForCurrentCard = createSelector(
+  orm,
+  (state) => selectPath(state).cardId,
+  ({ Card, CardDependency }, id) => {
+    if (!id || !CardDependency || !Card) return [];
+    return CardDependency.filter({ cardId: id })
+      .toRefArray()
+      .map((dep) => dep.dependencyCardId)
+      .filter((dependencyCardId) => {
+        const cardModel = Card.withId(dependencyCardId);
+        return cardModel && !cardModel.isDueCompleted;
+      });
+  },
+);
+
+export const selectDependentCardIdsForCurrentCard = createSelector(
+  orm,
+  (state) => selectPath(state).cardId,
+  ({ Card, CardDependency }, id) => {
+    if (!id || !CardDependency || !Card) return [];
+    const cardModel = Card.withId(id);
+    if (!cardModel || cardModel.isDueCompleted) {
+      return [];
+    }
+    return CardDependency.filter({ dependencyCardId: id })
+      .toRefArray()
+      .map((dep) => dep.cardId);
+  },
+);
 
 export const makeSelectCardProgressByCardId = () =>
   createSelector(
@@ -525,6 +577,10 @@ export default {
   selectLabelIdsByCardId,
   makeSelectDependencyCardIdsByCardId,
   selectDependencyCardIdsByCardId,
+  makeSelectDependentCardIdsByCardId,
+  selectDependentCardIdsByCardId,
+  selectDependencyCardIdsForCurrentCard,
+  selectDependentCardIdsForCurrentCard,
   makeSelectCardProgressByCardId,
   selectCardProgressByCardId,
   makeSelectShownOnFrontOfCardTaskListIdsByCardId,

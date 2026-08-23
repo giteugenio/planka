@@ -1,0 +1,79 @@
+/*!
+ * Copyright (c) 2024 PLANKA Software GmbH
+ * Licensed under the Fair Use License: https://github.com/plankanban/planka/blob/master/LICENSE.md
+ */
+
+:global(#app) {
+  .wrapper {
+    margin-bottom: 24px;
+  }
+
+  .moduleHeader {
+    color: #17394d;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 1.5;
+    margin: 0 0 12px;
+    padding: 6px 0;
+    word-wrap: break-word;
+  }
+
+  .moduleIcon {
+    color: #17394d;
+    font-size: 17px;
+    height: 32px;
+    left: -40px;
+    line-height: 32px;
+    margin-right: 0;
+    position: absolute;
+    top: 2px;
+    width: 32px;
+  }
+
+  .moduleWrapper {
+    margin: 0 0 0 40px;
+    position: relative;
+  }
+
+  .section {
+    margin-bottom: 12px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .subHeader {
+    align-items: center;
+    color: #5e6c84;
+    display: flex;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+
+  .subHeaderIcon {
+    font-size: 13px;
+    margin-right: 6px;
+  }
+
+  .subHeaderText {
+    margin-right: 6px;
+  }
+
+  .countBadge {
+    background: rgba(9, 30, 66, 0.08);
+    border-radius: 10px;
+    color: #5e6c84;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 1px 6px;
+  }
+
+  .items {
+    display: flex;
+    flex-direction: column;
+  }
+}

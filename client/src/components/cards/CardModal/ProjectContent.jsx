@@ -21,6 +21,7 @@ import { ClosableContext } from '../../../contexts';
 import NameField from './NameField';
 import TaskLists from './TaskLists';
 import CustomFieldGroups from './CustomFieldGroups';
+import CardDependencies from './CardDependencies';
 import Communication from './Communication';
 import CreationDetailsStep from './CreationDetailsStep';
 import MoreActionsStep from './MoreActionsStep';
@@ -540,6 +541,7 @@ const ProjectContent = React.memo(() => {
               </div>
             </div>
           )}
+          <CardDependencies />
           <div className={styles.contentModule}>
             <div className={styles.moduleWrapper}>
               <Icon name="list ul" className={styles.moduleIcon} />

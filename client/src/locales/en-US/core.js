@@ -100,6 +100,8 @@ export default {
       background: 'Background',
       baseCustomFields_title: 'Base Custom Fields',
       baseGroup: 'Base group',
+      blockedBy: 'Blocked by',
+      blocking: 'Blocking',
       board: 'Board',
       boardActions_title: 'Board Actions',
       boardNotFound_title: 'Board Not Found',
@@ -149,6 +151,7 @@ export default {
       customFields_title: 'Custom Fields',
       customerPanel_title: 'Customer Panel',
       dangerZone_title: 'Danger Zone',
+      dependencies: 'Dependencies',
       disable2fa_title: 'Disable Two-Factor Authentication',
       disable2faWarning:
         'You will need to confirm your current password and a TOTP code. Existing sessions stay signed in.',

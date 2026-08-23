@@ -1,0 +1,70 @@
+/*!
+ * Copyright (c) 2024 PLANKA Software GmbH
+ * Licensed under the Fair Use License: https://github.com/plankanban/planka/blob/master/LICENSE.md
+ */
+
+:global(#app) {
+  .wrapper {
+    align-items: center;
+    background: #ffffff;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(9, 30, 66, 0.13), 0 0 1px rgba(9, 30, 66, 0.13);
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+    padding: 6px 10px;
+    transition: background 0.15s ease, box-shadow 0.15s ease;
+
+    &:hover {
+      background: #f4f5f7;
+      box-shadow: 0 1px 3px rgba(9, 30, 66, 0.25), 0 0 1px rgba(9, 30, 66, 0.25);
+
+      .deleteButton {
+        opacity: 1;
+      }
+    }
+  }
+
+  .link {
+    align-items: center;
+    color: #17394d;
+    display: flex;
+    flex: 1;
+    min-width: 0;
+    text-decoration: none;
+
+    &:hover {
+      color: #0079bf;
+    }
+  }
+
+  .icon {
+    color: #6b808c;
+    flex-shrink: 0;
+    font-size: 14px;
+    margin-right: 8px;
+  }
+
+  .name {
+    flex: 1;
+    font-size: 14px;
+    line-height: 1.4;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .deleteButton {
+    background: transparent !important;
+    color: #6b808c !important;
+    flex-shrink: 0;
+    margin: 0 -4px 0 8px !important;
+    opacity: 0;
+    padding: 4px 6px !important;
+    transition: opacity 0.15s ease, color 0.15s ease;
+
+    &:hover {
+      color: #eb5a46 !important;
+    }
+  }
+}

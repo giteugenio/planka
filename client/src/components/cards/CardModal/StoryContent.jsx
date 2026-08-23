@@ -21,6 +21,7 @@ import { ClosableContext } from '../../../contexts';
 import NameField from './NameField';
 import Thumbnail from './Thumbnail';
 import CustomFieldGroups from './CustomFieldGroups';
+import CardDependencies from './CardDependencies';
 import Communication from './Communication';
 import CreationDetailsStep from './CreationDetailsStep';
 import MoreActionsStep from './MoreActionsStep';
@@ -463,6 +464,7 @@ const StoryContent = React.memo(() => {
               </div>
             </div>
           )}
+          <CardDependencies />
           <div className={styles.contentModule}>
             <div className={styles.moduleWrapper}>
               <Icon name="list ul" className={styles.moduleIcon} />
