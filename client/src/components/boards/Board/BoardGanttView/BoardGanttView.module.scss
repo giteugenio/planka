@@ -3,6 +3,25 @@
  * Licensed under the Fair Use License: https://github.com/plankanban/planka/blob/master/LICENSE.md
  */
 
+// Task list progress bar colors (matching Semantic UI .ui.progress in styles.css)
+$ui-progress-blue: #2185d0;
+$ui-progress-blue-active: #1678c2;
+$ui-progress-success: #21ba45;
+$ui-progress-success-active: #16ab39;
+
+// Card completed due date background colors
+$card-due-completed-bg: #21ba45;
+$card-due-completed-bg-selected: #16ab39;
+
+:export {
+  progressBlue: $ui-progress-blue;
+  progressBlueActive: $ui-progress-blue-active;
+  progressSuccess: $ui-progress-success;
+  progressSuccessActive: $ui-progress-success-active;
+  dueCompletedBg: $card-due-completed-bg;
+  dueCompletedBgSelected: $card-due-completed-bg-selected;
+}
+
 .wrapper {
   display: flex;
   flex-direction: column;

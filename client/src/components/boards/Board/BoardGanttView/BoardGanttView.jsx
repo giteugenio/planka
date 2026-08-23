@@ -47,6 +47,7 @@ const BoardGanttView = React.memo(({ cardIds }) => {
           startDate: card && card.startDate ? safeToISOString(card.startDate) : null,
           dueDate: card && card.dueDate ? safeToISOString(card.dueDate) : null,
           createdAt: card && card.createdAt ? safeToISOString(card.createdAt) : null,
+          isDueCompleted: card ? !!card.isDueCompleted : false,
           dependencyIds,
           progress,
         };
@@ -122,6 +123,24 @@ const BoardGanttView = React.memo(({ cardIds }) => {
         ),
       );
 
+      const isAllTasksCompleted = card.progress === 100;
+      const progressColor = isAllTasksCompleted ? styles.progressSuccess : styles.progressBlue;
+      const progressSelectedColor = isAllTasksCompleted
+        ? styles.progressSuccessActive
+        : styles.progressBlueActive;
+
+      const taskStyles = card.isDueCompleted
+        ? {
+            backgroundColor: styles.dueCompletedBg,
+            backgroundSelectedColor: styles.dueCompletedBgSelected,
+            progressColor,
+            progressSelectedColor,
+          }
+        : {
+            progressColor,
+            progressSelectedColor,
+          };
+
       return {
         id: String(card.id),
         name: card.name || '',
@@ -131,10 +150,7 @@ const BoardGanttView = React.memo(({ cardIds }) => {
         dependencies: safeDependencies,
         type: 'task',
         isDisabled: !isEditor,
-        styles: {
-          progressColor: '#4bce97',
-          progressSelectedColor: '#1f845a',
-        },
+        styles: taskStyles,
       };
     });
 
@@ -152,6 +168,7 @@ const BoardGanttView = React.memo(({ cardIds }) => {
           task.type === prev.type &&
           task.start.getTime() === prev.start.getTime() &&
           task.end.getTime() === prev.end.getTime() &&
+          dequal(task.styles, prev.styles) &&
           dequal(task.dependencies, prev.dependencies)
         );
       });
